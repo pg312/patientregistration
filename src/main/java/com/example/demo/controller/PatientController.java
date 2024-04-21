@@ -1,15 +1,21 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.exception.PatientNotFoundExcetion;
 import com.example.demo.model.Patient;
 import com.example.demo.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("patient")
@@ -37,9 +43,9 @@ public class PatientController {
         return new ResponseEntity<>(patient,HttpStatus.OK);
     }
 
-    @ExceptionHandler(value=NoSuchElementException.class)
-    public ResponseEntity handleNoSuchElementException(NoSuchElementException ne){
-        System.out.println("No patient found "+ ne.getMessage());
-        return new ResponseEntity(null,HttpStatus.NOT_FOUND);
+    @ExceptionHandler(PatientNotFoundExcetion.class)
+    public ResponseEntity<ErrorResponse> handlePatientNotFoundException(PatientNotFoundExcetion ne){
+        return new ResponseEntity<>(ErrorResponse.create(ne,HttpStatus.NOT_FOUND,ne.getMessage()),
+          HttpStatus.NOT_FOUND);
     }
 }

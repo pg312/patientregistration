@@ -45,4 +45,9 @@ public class Patient {
     @JoinColumn(name = "address_id")
     @NotNull
     private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id")
+    private Identifier identifier;
+
 }

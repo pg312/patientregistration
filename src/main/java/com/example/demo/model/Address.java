@@ -27,7 +27,4 @@ public class Address {
     @Column
     private String zipCode;
 
-    @OneToOne
-    @JsonIgnore
-    private Patient patient;
 }

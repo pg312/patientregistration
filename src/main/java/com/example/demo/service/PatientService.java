@@ -9,6 +9,7 @@ import com.example.demo.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,11 @@ public class PatientService {
     public Patient savePatient(Patient patient) {
         Identifier identifier = saveIdentifier();
         patient.setIdentifier(identifier);
+        if(patient.getUuid() == null)
+            patient.setCreatedAt(LocalDateTime.now());
+        else
+            patient.setUpdatedAt(LocalDateTime.now()
+            );
        return patientRepository.save(patient);
     }
 

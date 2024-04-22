@@ -1,12 +1,16 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -33,10 +37,10 @@ public class Patient {
     @Size(min=10, max=10)
     private String mobileNumber;
 
-//    @Column
-//    @NotBlank
-//    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
-//    private LocalDate dateOfBirth;
+    @Column
+    @Past
+    @NotNull
+    private LocalDate dateOfBirth;
 
     @Column
     private String emailId;
@@ -50,4 +54,9 @@ public class Patient {
     @JoinColumn(name = "patient_id")
     private Identifier identifier;
 
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
 }

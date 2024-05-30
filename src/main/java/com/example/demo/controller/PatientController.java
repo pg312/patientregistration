@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 
 import com.example.demo.exception.PatientNotFoundExcetion;
+import com.example.demo.helper.PatientHelper;
 import com.example.demo.model.Patient;
+import com.example.demo.model.PatientResponse;
 import com.example.demo.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,9 +35,10 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable String id){
+    public ResponseEntity<PatientResponse> getPatientById(@PathVariable String id){
         Patient patient = patientService.findById(id);
-        return new ResponseEntity<>(patient,HttpStatus.OK);
+        PatientResponse patientResponse = PatientHelper.convert(patient);
+        return new ResponseEntity<>(patientResponse,HttpStatus.OK);
     }
 
     @ExceptionHandler(PatientNotFoundExcetion.class)

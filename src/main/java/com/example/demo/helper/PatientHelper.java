@@ -4,6 +4,8 @@ import com.example.demo.model.Patient;
 import com.example.demo.model.PatientResponse;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PatientHelper {
 
@@ -23,6 +25,10 @@ public class PatientHelper {
     }
 
     private static int calculateAge(LocalDate dateOfBirth){
-        return LocalDate.now().getYear() - dateOfBirth.getYear();
+        return dateOfBirth == null? 0: LocalDate.now().getYear() - dateOfBirth.getYear();
+    }
+
+    public static List<PatientResponse> convert(List<Patient> patients) {
+        return patients.stream().map(PatientHelper::convert).collect(Collectors.toList());
     }
 }

@@ -41,6 +41,13 @@ public class PatientController {
         return new ResponseEntity<>(patientResponse,HttpStatus.OK);
     }
 
+    @GetMapping
+    private ResponseEntity<List<PatientResponse>> getPatientByName(@RequestParam String name){
+        List<Patient> patients = patientService.findByName(name);
+        List<PatientResponse> patientResponses = PatientHelper.convert(patients);
+        return new ResponseEntity<>(patientResponses,HttpStatus.OK);
+    }
+
     @ExceptionHandler(PatientNotFoundExcetion.class)
     public ResponseEntity<ErrorResponse> handlePatientNotFoundException(PatientNotFoundExcetion ne){
         return new ResponseEntity<>(ErrorResponse.create(ne,HttpStatus.NOT_FOUND,ne.getMessage()),

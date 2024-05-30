@@ -7,6 +7,9 @@ import com.example.demo.model.Patient;
 import com.example.demo.repository.IdentifierRepository;
 import com.example.demo.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -51,5 +54,9 @@ public class PatientService {
 
     public Patient findById(String id) {
         return patientRepository.findById(UUID.fromString(id)).orElseThrow(() -> new PatientNotFoundExcetion("Patient Not Found "+id));
+    }
+
+    public List<Patient> findByName(String name) {
+        return patientRepository.findByName(name, Sort.by("firstName"));
     }
 }

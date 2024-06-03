@@ -41,6 +41,13 @@ public class PatientController {
         return new ResponseEntity<>(patientResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<List<PatientResponse>> getPatientByPatientId(@RequestParam String patientId){
+        List<Patient> patient = patientService.findByPatientId(patientId);
+        List<PatientResponse> patientResponse = PatientHelper.convert(patient);
+        return new ResponseEntity<>(patientResponse,HttpStatus.OK);
+    }
+
     @GetMapping
     private ResponseEntity<List<PatientResponse>> getPatientByName(@RequestParam String name){
         List<Patient> patients = patientService.findByName(name);

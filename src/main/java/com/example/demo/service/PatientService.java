@@ -7,8 +7,7 @@ import com.example.demo.model.Patient;
 import com.example.demo.repository.IdentifierRepository;
 import com.example.demo.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +23,9 @@ public class PatientService {
 
     @Autowired
     IdentifierRepository identifierRepository;
+
+    @Value("${patient.identifier.prefix}")
+    private String patientIdPrefix;
 
     private static void run() {
         throw new NullPointerException();
@@ -43,7 +45,7 @@ public class PatientService {
     private Identifier saveIdentifier() {
         Identifier identifier = new Identifier();
         identifierRepository.save(identifier);
-        identifier.setPatientId("PAT"+identifier.getId());
+        identifier.setPatientId(patientIdPrefix.trim()+identifier.getId());
         identifierRepository.save(identifier);
         return identifier;
     }
@@ -56,6 +58,9 @@ public class PatientService {
         return patientRepository.findById(UUID.fromString(id)).orElseThrow(() -> new PatientNotFoundExcetion("Patient Not Found "+id));
     }
 
+    public List<Patient> findByPatientId(String patientId){
+        return patientRepository.findByPatientId(patientId);
+    }
     public List<Patient> findByName(String name) {
         return patientRepository.findByName(name, Sort.by("firstName"));
     }

@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Patient;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -18,4 +17,8 @@ public interface PatientRepository extends PagingAndSortingRepository<Patient, U
 
     @Query(value = "Select p from Patient p where p.firstName LIKE %:name% OR p.middleName LIKE %:name% OR p.lastName LIKE %:name%")
     List<Patient> findByName(@Param("name")String name, Sort sort);
+
+    @Query(value = "Select p from Patient p INNER JOIN p.identifier i where i.patientId LIKE %:patientId%")
+    List<Patient> findByPatientId(@Param("patientId") String patientId);
+
 }
